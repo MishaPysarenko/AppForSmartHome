@@ -11,6 +11,17 @@ ApplicationWindow {
     width: 640
     height: 480
     title: "Smarthouse"
+    background: Rectangle {
+           color: "#F0F0F0" // Змініть цей колір на потрібний вам
+       }
+
+    InputPanel {
+          id: inputPanel
+
+          width: window.width
+          anchors.bottom: parent.bottom
+          visible: false
+      }
 
     StackView {
         id: stackView
@@ -38,19 +49,31 @@ ApplicationWindow {
 
 
             // Текстове поле
-            Text {
-                id: mainText
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.verticalCenterOffset: -120
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Текст данних")
-                font.pixelSize: 24
+            Rectangle{
+                id:mainTextRectangle
+                    anchors.top: parent.top
+                    anchors.topMargin: 130
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width * 0.7
+                    height: parent.height * 0.3
+                    border.color: "black"
+                Text {
+                    id: mainText
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("Текст данних")
+                    font.pixelSize: 24
+                }
             }
+
+
 
             // Колонка кнопок
             Column {
-                anchors.top: mainText.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: mainTextRectangle.bottom
+                anchors.left: parent.left
+                anchors.leftMargin: 55
                 spacing: 10
 
                 Button {
@@ -61,12 +84,12 @@ ApplicationWindow {
                 }
 
                 Button {
-                                   text: qsTr("Полив")
-                                   onClicked: {
-                                       stackView.push(wateringPageComponent)
-                                   }
-                               }
 
+                    text: qsTr("Полив")
+                    onClicked: {
+                        stackView.push(wateringPageComponent)
+                    }
+                }
                 Button {
                     text: qsTr("Охорона")
                     onClicked: {
@@ -114,6 +137,7 @@ ApplicationWindow {
                 anchors.top: parent.top
                 anchors.topMargin: 90
                 anchors.left: parent.left
+                anchors.leftMargin: 15
 
                 Text {
                     text: "Кухня     - значення"
@@ -131,45 +155,63 @@ ApplicationWindow {
                     text: "Батареї  - значення"
                 }
             }
+            Column{
+            anchors.top: parent.top
+            anchors.topMargin: 250
+            anchors.left: parent.left
+            anchors.leftMargin: 15
+                // Чотири кнопки
+            TextField {
+                id: nightTariffTextField
+                placeholderText: "Налаштування нічного тарифу"
+                width: 300
+                focus: true
+                activeFocusOnPress: true
 
-            // Чотири кнопки
-            Button {
-                text: "Налаштування часу"
-                anchors.top: parent.top
-                anchors.topMargin: 300
-                anchors.horizontalCenter: parent.horizontalCenter
-                onClicked: {
-                    // Логіка для налаштування часу
+                onActiveFocusChanged: {
+                    inputPanel.visible = nightTariffTextField.activeFocus;
+                }
+                onAccepted: {
+                    var enteredValue = text;
+                    // Логіка для обробки введеного значення термостату (enteredValue)
                 }
             }
 
-            Button {
-                text: "Налаштування часу нічного тарифу"
-                anchors.top: parent.top
-                anchors.topMargin: 350
-                anchors.horizontalCenter: parent.horizontalCenter
-                onClicked: {
-                    // Логіка для налаштування часу нічного тарифу
+            TextField {
+                id: thermostatTextField
+                placeholderText: "Налаштування термостату"
+                width: 300
+                focus: true
+                activeFocusOnPress: true
+                onActiveFocusChanged: {
+                           inputPanel.visible = thermostatTextField.activeFocus;
+                       }
+                onAccepted: {
+                    var enteredValue = text;
+                    // Логіка для обробки введеного значення термостату (enteredValue)
                 }
             }
 
-            Button {
-                text: "Налаштування термостату"
-                anchors.top: parent.top
-                anchors.topMargin: 400
-                anchors.horizontalCenter: parent.horizontalCenter
-                onClicked: {
-                    // Логіка для налаштування термостату
+            TextField {
+                id: timeSettingTextField
+                placeholderText: "Налаштування часу"
+                width: 300
+                focus: true
+                activeFocusOnPress: true
+                onAccepted: {
+                    var enteredValue = text;
+                    // Логіка для обробки введеного часу (enteredValue)
                 }
             }
 
-            Button {
-                text: "Журнал температури"
-                anchors.top: parent.top
-                anchors.topMargin: 450
-                anchors.horizontalCenter: parent.horizontalCenter
-                onClicked: {
-                    stackView.push(temperatureJournalPageComponent)
+
+
+                Button {
+                    text: "Журнал температури"
+
+                    onClicked: {
+                        stackView.push(temperatureJournalPageComponent)
+                    }
                 }
             }
         }
@@ -450,6 +492,7 @@ ApplicationWindow {
                 anchors.top: parent.top
                 anchors.topMargin: 90
                 anchors.left: parent.left  // Змінено вирівнювання по лівому краю
+                anchors.leftMargin: 15
 
                 Text {
                     text: "Датчик 1 - значення"
