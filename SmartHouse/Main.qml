@@ -8,8 +8,8 @@ import QtQuick.Layouts 1.15
 ApplicationWindow {
     id: window
     visible: true
-    width: 640
-    height: 480
+    width: 720
+    height: 1600
     title: "Smarthouse"
     background: Rectangle {
            color: "#F0F0F0" // Змініть цей колір на потрібний вам
@@ -17,8 +17,8 @@ ApplicationWindow {
 
     InputPanel {
           id: inputPanel
-
-          width: window.width
+          width: 360
+          height: 160
           anchors.bottom: parent.bottom
           visible: false
       }
@@ -198,6 +198,9 @@ ApplicationWindow {
                 width: 300
                 focus: true
                 activeFocusOnPress: true
+                onActiveFocusChanged: {
+                           inputPanel.visible = timeSettingTextField.activeFocus;
+                       }
                 onAccepted: {
                     var enteredValue = text;
                     // Логіка для обробки введеного часу (enteredValue)
