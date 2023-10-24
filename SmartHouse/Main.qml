@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
 import QtQuick.VirtualKeyboard 2.15
 import QtQuick.Layouts 1.15
+import com.yourdomain 1.0
 
 
 ApplicationWindow {
@@ -14,7 +15,9 @@ ApplicationWindow {
     background: Rectangle {
            color: "#F0F0F0" // Змініть цей колір на потрібний вам
        }
-
+    SMSConnector {
+            id: smsFunctions
+        }
     InputPanel {
           id: inputPanel
           width: 360
@@ -634,7 +637,7 @@ ApplicationWindow {
                            Button {
                                text: "СМС"
                                onClicked: {
-                                   // Логіка для налаштування СМС
+                                stackView.push(smsPageComponent)
                                }
                            }
 
@@ -643,6 +646,55 @@ ApplicationWindow {
                                onClicked: {
                                    // Логіка для налаштування Інтернету
                                }
+                    }
+                }
+            }
+        }
+    }
+    Component {
+        id: smsPageComponent
+
+        Item {
+            id: smsPage
+
+            Button {
+                text: "Назад"
+                anchors.top: parent.top
+                anchors.left: parent.left
+                onClicked: {
+                    stackView.pop()
+                }
+            }
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 10
+
+                Text {
+                    text: "Введіть номер телефону"
+                    horizontalAlignment: Text.AlignHCenter
+                }
+
+                TextField {
+                    id: phoneNumberField
+                    width: 200
+                    placeholderText: "Номер телефону"
+                    focus: true
+                    activeFocusOnPress: true
+
+                    onActiveFocusChanged: {
+                        inputPanel.visible = phoneNumberField.activeFocus;
+                    }
+                    onAccepted: {
+                        var enteredValue = text;
+                        // Логіка для обробки введеного значення термостату (enteredValue)
+                    }
+                }
+
+                Button {
+                    text: "Підтвердити"
+                    onClicked: {
+                        smsFunctions.sendSms(phoneNumberField.text)
                     }
                 }
             }

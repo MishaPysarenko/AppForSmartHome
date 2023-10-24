@@ -16,6 +16,8 @@ qt_add_qml_module(SmartHouse
     URI SmartHouse
     VERSION 1.0
     QML_FILES Main.qml
+    SOURCES sms_connecting.h sms_connecting.cpp
+
 
 )
 
